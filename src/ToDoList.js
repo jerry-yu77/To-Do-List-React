@@ -1,33 +1,29 @@
 import "./ToDoList.css";
 import TaskInput from './components/taskInput';
 import TaskList from './components/taskList';
-import DoneList from './components/doneList';
 import { useState } from 'react';
 import _ from 'lodash';
 
 const ToDoList = () => {
     const [tasks, setTasks] = useState([]);
-    const [finishedTasks, setFinishedTasks] = useState([]);
     const handleSubmitTask = (task) => {
         let id = Math.floor(Math.random() * 999999);
-
-        setTasks([...tasks, {id: id, value: task}]);
+        setTasks([...tasks, {checked: false, id: id, value: task}]);
     };
     const handleTaskCheckbox = (id, e) => {
         let checked = e.target.checked;
-        let sourceTasks = checked ? tasks : finishedTasks;
-        let index = _.findIndex(sourceTasks, {id, id});
+        let targetTask = _.find(tasks, {id, id});
+        let filteredTasks = _.filter(tasks, (task) => task.id !== id);
 
+        targetTask.checked = checked;
         if (checked) {
-            setTasks(_.filter(tasks, (task) => task.id !== id));
-            setFinishedTasks([...finishedTasks, sourceTasks[index]]);
+            setTasks([...filteredTasks, targetTask]);
         } else {
-            setTasks([...tasks, sourceTasks[index]]);
-            setFinishedTasks(_.filter(finishedTasks, (task) => task.id !== id));
-        }           
+            setTasks([targetTask, ...filteredTasks]);
+        }
     };
     const handleDelete = (id) => {
-        setFinishedTasks(_.filter(finishedTasks, (task) => task.id !== id));
+        setTasks(_.filter(tasks, (task) => task.id !== id));
     };
 
     return (
@@ -37,10 +33,6 @@ const ToDoList = () => {
             />
             <TaskList 
                 tasks={tasks}
-                handleTaskCheckbox={handleTaskCheckbox} 
-            />
-            <DoneList 
-                finishedTasks={finishedTasks}
                 handleDelete={handleDelete}
                 handleTaskCheckbox={handleTaskCheckbox} 
             />

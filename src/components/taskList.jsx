@@ -1,13 +1,15 @@
 import Task from './task';
 
-const TaskList = ({tasks, handleTaskCheckbox}) => {
+const TaskList = ({tasks, handleDelete, handleTaskCheckbox}) => {
     return (
         <div>
-            {tasks.map(task => 
+            {tasks.map(({checked, id, value}) => 
                 <Task 
-                    key={task.id} 
-                    value={task.value} 
-                    handleTaskCheckbox={(e) => handleTaskCheckbox(task.id, e)} 
+                    checked={checked}
+                    key={id} 
+                    value={value}
+                    handleTaskCheckbox={(e) => handleTaskCheckbox(id, e)}
+                    handleDelete={() => handleDelete(id)}
                 />
             )}
         </div>
