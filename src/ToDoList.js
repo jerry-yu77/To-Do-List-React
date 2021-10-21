@@ -1,67 +1,51 @@
 import "./ToDoList.css";
-import React, { Component } from 'react';
 import TaskInput from './components/taskInput';
 import TaskList from './components/taskList';
 import DoneList from './components/doneList';
+import { useState } from 'react';
+import _ from 'lodash';
 
-class ToDoList extends Component {
-    state = {
-        tasks: [],
-        taskIndex: 1,
-        finishedTasks: [],
-    }
-    render() { 
-        return (
-            <React.Fragment>
-                <TaskInput 
-                    onSubmitTask={this.handleSubmitTask}
-                />
-                <TaskList 
-                    tasks={this.state.tasks}
-                    handleTaskCheckbox={this.handleTaskCheckbox} 
-                />
-                <DoneList 
-                    finishedTasks={this.state.finishedTasks} 
-                    handleTaskCheckbox={this.handleTaskCheckbox} 
-                    handleDelete={this.handleDelete}
-                />
-            </React.Fragment>
-         );
-    }
+const ToDoList = () => {
+    const [tasks, setTasks] = useState([]);
+    const [finishedTasks, setFinishedTasks] = useState([]);
+    const handleSubmitTask = (task) => {
+        let id = Math.floor(Math.random() * 999999);
 
-    handleSubmitTask = (task) => {
-        let tasks = this.state.tasks;
-        
-        tasks.push({id: this.state.taskIndex++, value: task});
-        this.setState(this.state);
-    }
+        setTasks([...tasks, {id: id, value: task}]);
+    };
+    const handleTaskCheckbox = (id, e) => {
+        let checked = e.target.checked;
+        let sourceTasks = checked ? tasks : finishedTasks;
+        let index = _.findIndex(sourceTasks, {id, id});
 
-    handleTaskCheckbox = (id, e) => {
-        this.moveTask(e.target.checked, id);
-        this.setState(this.state);
-    }
+        if (checked) {
+            setTasks(_.filter(tasks, (task) => task.id !== id));
+            setFinishedTasks([...finishedTasks, sourceTasks[index]]);
+        } else {
+            setTasks([...tasks, sourceTasks[index]]);
+            setFinishedTasks(_.filter(finishedTasks, (task) => task.id !== id));
+        }           
+    };
+    const handleDelete = (id) => {
+        setFinishedTasks(_.filter(finishedTasks, (task) => task.id !== id));
+    };
 
-    moveTask = (checked, id) => {
-        let sourceTasks = checked ? this.state.tasks : this.state.finishedTasks;
-        let targetTasks = checked ? this.state.finishedTasks : this.state.tasks;
-        let i;
-        
-        for (i = 0; i <= sourceTasks.length; i++) {
-            if (sourceTasks[i].id === id) {
-                targetTasks.push(sourceTasks[i]);
-                sourceTasks.splice(i, 1);
-                break;
-            }
-        }
-    }
-
-    handleDelete = (id) => {
-        let finishedTasks = this.state.finishedTasks;
-        let index = finishedTasks.findIndex((task) => task.id === id);
-
-        finishedTasks.splice(index, 1);
-        this.setState(this.state);
-    }
+    return (
+        <div>
+            <TaskInput 
+                onSubmitTask={handleSubmitTask}
+            />
+            <TaskList 
+                tasks={tasks}
+                handleTaskCheckbox={handleTaskCheckbox} 
+            />
+            <DoneList 
+                finishedTasks={finishedTasks}
+                handleDelete={handleDelete}
+                handleTaskCheckbox={handleTaskCheckbox} 
+            />
+        </div>
+    )
 }
  
 export default ToDoList;
