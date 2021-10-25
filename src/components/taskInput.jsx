@@ -1,7 +1,10 @@
 const TaskInput = (props) => {
     const submitTask = (e) => {
         if (e.key === "Enter") {
-            props.onSubmitTask(e.target.value);
+            props.onSubmitTask({
+                checked: false,
+                value: e.target.value
+            });
             e.target.value = "";
         }
     };

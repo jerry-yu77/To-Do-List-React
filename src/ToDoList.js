@@ -1,28 +1,59 @@
 import "./ToDoList.css";
 import TaskInput from './components/taskInput';
 import TaskList from './components/taskList';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import _ from 'lodash';
+
+const RESOURCE_ROUTE = "http://localhost:5000/tasks/";
+const HEADER = { "Content-type": "application/json" };
 
 const ToDoList = () => {
     const [tasks, setTasks] = useState([]);
-    const handleSubmitTask = (task) => {
-        let id = Math.floor(Math.random() * 999999);
-        setTasks([...tasks, {checked: false, id: id, value: task}]);
+    useEffect(() => {
+        const getTasks = async () => {
+            setTasks(await fetchTasks());
+        };
+        getTasks();
+    }, []);
+    const fetchTasks = async () => {
+        const res = await fetch(RESOURCE_ROUTE);
+        return res.json();
+    };
+    const handleSubmitTask = async (task) => {
+        // Inserting new task to server
+        const res = await fetch(RESOURCE_ROUTE, {
+            method: "POST",
+            headers: HEADER,
+            body: JSON.stringify(task)
+        });
+        const newTask = await res.json();
+        setTasks([...tasks, newTask]);
     };
     const handleTaskCheckbox = (id, e) => {
-        let checked = e.target.checked;
-        let targetTask = _.find(tasks, {id, id});
-        let filteredTasks = _.filter(tasks, (task) => task.id !== id);
+        const checked = e.target.checked;
+        const targetTask = _.find(tasks, {id, id});
+        const filteredTasks = _.filter(tasks, (task) => task.id !== id);
 
         targetTask.checked = checked;
+        
+        // Updating task on server
+        fetch(`${RESOURCE_ROUTE}${id}`, {
+            method: "PUT",
+            headers: HEADER,
+            body: JSON.stringify(targetTask)
+        });
+        
         if (checked) {
             setTasks([...filteredTasks, targetTask]);
         } else {
             setTasks([targetTask, ...filteredTasks]);
         }
     };
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
+        // Deleting task on server
+        await fetch(`${RESOURCE_ROUTE}${id}`, {
+            method: "DELETE"
+        });
         setTasks(_.filter(tasks, (task) => task.id !== id));
     };
 
