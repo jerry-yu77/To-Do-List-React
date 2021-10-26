@@ -2,7 +2,7 @@ import Task from './task';
 
 const TaskList = ({tasks, handleDelete, handleTaskCheckbox}) => {
     return (
-        <div>
+        <ul>
             {tasks.map(({checked, id, value}) => 
                 <Task 
                     checked={checked}
@@ -12,7 +12,7 @@ const TaskList = ({tasks, handleDelete, handleTaskCheckbox}) => {
                     handleDelete={() => handleDelete(id)}
                 />
             )}
-        </div>
+        </ul>
     )
 }
 

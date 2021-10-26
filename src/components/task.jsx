@@ -3,24 +3,24 @@ const Task = ({checked, handleTaskCheckbox, handleDelete, value}) => {
         textDecoration: checked ? "line-through" : ""
     };
     return (
-        <div>
+        <li>
             <input 
                 className="task-checkbox"
                 type="checkbox"
                 checked={checked}
                 onChange={handleTaskCheckbox}
             />
+            <span style={taskTextStyle}>
+                {value}
+            </span>
             <button
-                className="badge badge-danger badge-pill mr-2"
+                className="badge badge-danger badge-pill mr-2 right-button"
                 hidden={!checked}
                 onClick={handleDelete}
             >
                 Delete
             </button>
-            <span style={taskTextStyle}>
-                {value}
-            </span>
-        </div>
+        </li>
     )
 }
  

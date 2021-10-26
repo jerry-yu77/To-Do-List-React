@@ -11,7 +11,8 @@ const ToDoList = () => {
     const [tasks, setTasks] = useState([]);
     useEffect(() => {
         const getTasks = async () => {
-            setTasks(await fetchTasks());
+            const res = await fetchTasks();
+            setTasks(_.sortBy(res, ["checked"]));
         };
         getTasks();
     }, []);
@@ -58,7 +59,7 @@ const ToDoList = () => {
     };
 
     return (
-        <div>
+        <div className="container">
             <TaskInput 
                 onSubmitTask={handleSubmitTask}
             />

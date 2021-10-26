@@ -1,3 +1,33 @@
+.container {
+    background-color: lightgray;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 10px;
+    padding-bottom: 2px;
+    width: 500px;
+}
+ul {
+    list-style: none;
+    padding: 0px;
+}
+h1 {
+    text-align: center;
+}
+form {
+    margin-bottom: 20px;
+}
+.error-msg {
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 2px;
+}
+.right-button {
+    float: right;
+    height: 25px;
+    margin-top: 2px;
+    width: 75px;
+}
 .task-checkbox {
     margin: 10px 10px 0px 10px;
     transform: scale(1.5);
