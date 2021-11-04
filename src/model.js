@@ -1,4 +1,4 @@
-import { useStoreState, action, thunk } from 'easy-peasy';
+import { action, thunk } from 'easy-peasy';
 import _ from 'lodash';
 
 const RESOURCE_ROUTE = "http://localhost:5000/tasks/";
@@ -6,6 +6,16 @@ const HEADER = { "Content-type": "application/json" };
 
 export default {
     tasks: [],
+    tabs: [{
+        active: true,
+        id: 1,
+        label: "Personal"
+        
+    }, {
+        active: false,
+        id: 2,
+        label: "Work"
+    }],
 
     // Thunks
     fetchTasks: thunk(async (actions) => {
@@ -50,6 +60,11 @@ export default {
     }),
 
     // Actions
+    tabChanged: action((state, tabID) => {
+        state.tabs = state.tabs.map((tab) => { 
+            return {...tab, active: tab.id === tabID};
+        });
+    }),
     setTasks: action((state, tasks) => {
         state.tasks = tasks;
     }),

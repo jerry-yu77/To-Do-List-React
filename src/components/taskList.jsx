@@ -13,16 +13,17 @@ const TaskList = () => {
 
     return (
         <ul>
-            {tasks.map(({checked, id, value}) => 
+            {tasks.map(({checked, id, tabID, value}) => 
                 <Task 
                     checked={checked}
                     key={id}
-                    id={id} //task isn't picking up key as a prop for some reason. adding id prop to pass in id
+                    id={id}
+                    tabID={tabID}
                     value={value}
                 />
             )}
         </ul>
-    )
+    );
 }
 
 export default TaskList

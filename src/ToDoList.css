@@ -16,6 +16,26 @@ h1 {
 form {
     margin-bottom: 20px;
 }
+.active-tab {
+    font-weight: bold;
+    opacity: 100%;
+}
+.inactive-tab {
+    opacity: 50%;
+}
+.tab {
+    background-color: lightslategray;
+    border: 1px black solid;
+    border-radius: 10px 10px 0px 0px;
+    cursor: pointer;
+    text-align: center;
+    width: 100px;
+}
+.tab-list {
+    border-bottom: 1px black solid;
+    display: flex;
+    justify-content: center;
+}
 .error-msg {
     color: red;
     font-size: 14px;
@@ -29,6 +49,7 @@ form {
     width: 75px;
 }
 .task-checkbox {
+    cursor: pointer;
     margin: 10px 10px 0px 10px;
     transform: scale(1.5);
 }

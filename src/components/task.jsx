@@ -1,7 +1,10 @@
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import _ from 'lodash';
 
-const Task = ({checked, id, value}) => {
+const Task = ({checked, id, tabID, value}) => {
+    const tabs = useStoreState(state => state.tabs);
     const tasks = useStoreState(state => state.tasks);
+    const activeTabID = _.find(tabs, {active: true}).id;
     const taskTextStyle = {
         textDecoration: checked ? "line-through" : ""
     };
@@ -16,7 +19,7 @@ const Task = ({checked, id, value}) => {
         handleTaskCheckbox(args);
     };
     
-    return (
+    return activeTabID === tabID ? (
         <li>
             <input 
                 className="task-checkbox"
@@ -35,7 +38,7 @@ const Task = ({checked, id, value}) => {
                 Delete
             </button>
         </li>
-    )
+    ) : "";
 }
  
 export default Task;

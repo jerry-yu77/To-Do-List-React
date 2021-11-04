@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreState, useStoreActions } from 'easy-peasy';
+import _ from 'lodash';
 
 const TaskInput = () => {
     const [hasError, setHasError] = useState(false);
+    const tabs = useStoreState(state => state.tabs);
     const handleSubmitTask = useStoreActions(actions => actions.handleSubmitTask);
     const display = {
         display: hasError ? "block" : "none"
@@ -13,10 +15,13 @@ const TaskInput = () => {
         }
     };
     const onSubmit = (e) => {
+        const tabID = _.find(tabs, {active: true}).id;
+        
         e.preventDefault();
         if (e.target[0].value) {
             handleSubmitTask({
                 checked: false,
+                tabID: tabID,
                 value: e.target[0].value
             });
             e.target[0].value = "";
@@ -46,7 +51,7 @@ const TaskInput = () => {
                 Please enter a task.
             </div>
         </form>
-    )
+    );
 }
 
 export default TaskInput
