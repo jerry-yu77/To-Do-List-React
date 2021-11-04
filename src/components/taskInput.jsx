@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useStoreActions } from 'easy-peasy';
 
-const TaskInput = (props) => {
+const TaskInput = () => {
     const [hasError, setHasError] = useState(false);
+    const handleSubmitTask = useStoreActions(actions => actions.handleSubmitTask);
     const display = {
         display: hasError ? "block" : "none"
     };
@@ -13,7 +15,7 @@ const TaskInput = (props) => {
     const onSubmit = (e) => {
         e.preventDefault();
         if (e.target[0].value) {
-            props.onSubmitTask({
+            handleSubmitTask({
                 checked: false,
                 value: e.target[0].value
             });

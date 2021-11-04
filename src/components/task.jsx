@@ -1,14 +1,28 @@
-const Task = ({checked, handleTaskCheckbox, handleDelete, value}) => {
+import { useStoreState, useStoreActions } from 'easy-peasy';
+
+const Task = ({checked, id, value}) => {
+    const tasks = useStoreState(state => state.tasks);
     const taskTextStyle = {
         textDecoration: checked ? "line-through" : ""
     };
+    const handleTaskCheckbox = useStoreActions(actions => actions.handleTaskCheckbox);
+    const handleDelete = useStoreActions(actions => actions.handleDelete);
+    const onCheckboxChange = (e) => {
+        const args = {
+            e: e,
+            id: id,
+            tasks: tasks
+        }
+        handleTaskCheckbox(args);
+    };
+    
     return (
         <li>
             <input 
                 className="task-checkbox"
                 type="checkbox"
                 checked={checked}
-                onChange={handleTaskCheckbox}
+                onChange={onCheckboxChange}
             />
             <span style={taskTextStyle}>
                 {value}
@@ -16,7 +30,7 @@ const Task = ({checked, handleTaskCheckbox, handleDelete, value}) => {
             <button
                 className="badge badge-danger badge-pill mr-2 right-button"
                 hidden={!checked}
-                onClick={handleDelete}
+                onClick={() => handleDelete(id)}
             >
                 Delete
             </button>
