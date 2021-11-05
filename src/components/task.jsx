@@ -2,9 +2,8 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import _ from 'lodash';
 
 const Task = ({checked, id, tabID, value}) => {
-    const tabs = useStoreState(state => state.tabs);
+    const activeTabID = useStoreState(state => state.activeTabID);
     const tasks = useStoreState(state => state.tasks);
-    const activeTabID = _.find(tabs, {active: true}).id;
     const taskTextStyle = {
         textDecoration: checked ? "line-through" : ""
     };

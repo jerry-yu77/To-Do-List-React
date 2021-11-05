@@ -3,7 +3,7 @@
     border-radius: 10px;
     margin: auto;
     margin-top: 10px;
-    padding-bottom: 2px;
+    padding-bottom: 20px;
     width: 500px;
 }
 ul {
@@ -22,6 +22,11 @@ form {
 }
 .inactive-tab {
     opacity: 50%;
+}
+.notes-field {
+    resize: none;
+    height: 300px;
+    width: 100%;
 }
 .tab {
     background-color: lightslategray;

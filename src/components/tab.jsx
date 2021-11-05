@@ -3,8 +3,7 @@ import _ from 'lodash';
 
 const Tab = ({label, id}) => {
     const tabChanged = useStoreActions(actions => actions.tabChanged);
-    const tabs = useStoreState(state => state.tabs);
-    const activeTabID = _.find(tabs, {active: true}).id;
+    const activeTabID = useStoreState(state => state.activeTabID);
     let className = "tab"
 
     if (id === activeTabID) {
